@@ -17,7 +17,7 @@
       position: absolute;
       white-space: nowrap;
       font-weight: bold;
-      animation: moveLeft linear infinite;
+      animation: moveLeft linear forwards;
       text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
     }
 
@@ -29,120 +29,90 @@
 </head>
 <body>
   <script>
-    const messages = [
-      '这道数学题我真的完全看不懂，谁能耐心教教我...',
-      '作业堆积如山，看着就喘不过气来',
-      '物理公式就像天书，我真的很努力在学了',
-      '每次考试前都紧张得手心出汗，好害怕考砸',
-      '时间总是不够用，感觉自己好失败',
-      '面对作文题目，脑子里一片空白',
-      '为什么我这么努力，成绩还是这么差？',
-      '爸妈总是不理解我，说什么他们都觉得不对',
-      '想问老师问题，但总是鼓不起勇气',
-      '晚上躺在床上就是睡不着，第二天上课好困',
-      '明知道该写作业了，就是不想动',
-      '数学应用题每个字都认识，连起来就不懂了',
-      '历史事件和年代总是搞混，记性太差了',
-      '这次考试又考砸了，真的好想哭',
-      '英语听力说得太快了，根本听不懂',
-      '看到老师就紧张，不敢抬头',
-      '刚翻开书就想玩手机，我该怎么办',
-      '同学们都好优秀，只有我这么普通',
-      '试了好多学习方法，为什么都不适合我',
-	  '别着急，这道题我们一起想办法解决',
-	  '你背单词的方法很棒，可以教教我吗？',
-	  '想继续学画画，可是作业都写不完',
-	  '地理要记的东西太多了，脑子要爆炸了',
-	  '看着别人都有好朋友，只有我一个人好孤单',
-	  '生物实验又失败了，我是不是什么都做不好',
-	  '看到你这么努力，我也要向你学习',
-	  '朋友之间难免有摩擦，说出来我们一起面对',
-	  '注意力不集中很正常，试试番茄钟法吧',
-	  '作业我们一起写，互相监督效率更高',
-	  '化学方程式让我头好痛，谁来救救我',
-	  '突然觉得学习好没意思，什么都不想做',
-	  '明明花了很多时间，效率却这么低，好着急',
-	  '物理公式多画图理解，需要时我随时帮你',
-	  '考试别紧张，你的努力我们都看在眼里',
-	  '时间管理我们可以一起制定计划',
-	  '你的作文开头写得很有创意呢',
-	  '英语单词背了又忘，我是不是太笨了？',
-	  '最近压力大到睡不着，感觉快要撑不下去了',
-	  '和好朋友吵架了，心里好难受，不知道该怎么办',
-	  '上课时思绪总是飘走，我控制不住自己',
-	  '进步需要时间，你已经在路上了',
-	  '和父母沟通需要技巧，我们可以一起想办法',
-	  '化学方程式我有个记忆口诀，分享给你',
-	  '学习累了就休息会儿，我陪你散步聊天',
-	  '你的笔记记得真好，能借我参考一下吗',
-	  '问老师问题我陪你一起去吧',
-	  '睡前喝杯牛奶，我们一起养成好习惯',
-	  '你的画真美，学习和爱好可以兼顾的',
-	  '地理知识我们可以用思维导图来记忆',
-	  '愿意做我的朋友吗？我们可以一起学习',
-	  '实验失败是常事，下次我们一起来做',
-	  '写作业前先做个计划，我陪你一起执行',
-	  '数学题我们换个角度思考，或许就明白了',
-	  '历史年代我们可以编成故事来记忆',
-	  '这次没考好没关系，我们分析原因下次努力',
-	  '英语听力多听就会进步的，我陪你练习',
-	  '老师其实很和蔼的，我们一起去找他聊聊',
-	  '学习时把手机放远点，我帮你保管',
-	  '每个人都有自己的闪光点，你的善良就很珍贵',
-	  '学习方法要不断调整，我们一起探索最适合的',
-	  '你的笑容很有感染力，要保持哦',
-	  '遇到困难不要怕，我们是一个团队',
-	  '你的思维方式很独特，这很宝贵',
-	  '慢慢来，我相信你一定可以做到',
-	  '你提出的问题很有深度，让我也学到很多',
-	  '别给自己太大压力，尽力就好',
-	  '你的进步虽然慢，但每一步都很扎实',
-	  '犯错不可怕，重要的是从中学习',
-	  '你的坚持让我很佩服',
-	  '我们一起定个小目标，慢慢实现它'
+    const messagesFront = [
+      'lonely',
+      'excited',
+      'calm',
+      'relaxed',
+      'surprised',
+      'nervous',
+      'disappointed',
+      'happy',
+      'amazed',
+      'upset',
+      'sad',
+      'scared',
+      'hopeful'
     ];
-
+  
+    const messagesBack = [
+      'Take a deep breath and smell something good',
+      'Go out to enjoy the nature',
+      'Talk with your family or friends',
+      'Watch a fun movie',
+      'Have a trip',
+      'Have something delicious',
+      'And we can give each other a big hug'
+    ];
+  
     function random(min, max) {
       return Math.random() * (max - min) + min;
     }
-
-    function createBarrage() {
+  
+    // 生成一条弹幕
+    function createBarrage(msg, type = 'front') {
       const barrage = document.createElement('div');
       barrage.className = 'barrage';
-      barrage.innerText = messages[Math.floor(Math.random() * messages.length)];
-      barrage.style.top = random(10, window.innerHeight - 60) + 'px';
-      barrage.style.fontSize = random(22, 38) + 'px';
-      barrage.style.color = `hsl(${Math.random() * 360}, 85%, 55%)`;
-      const duration = random(7, 12);
+      barrage.innerText = msg;
+  
+      const topPos = random(10, window.innerHeight - 40);
+      barrage.style.top = topPos + 'px';
+      barrage.style.fontSize = random(28, 42) + 'px'; // 字略大
+      barrage.style.whiteSpace = 'nowrap';
+  
+      // 更快的滚动速度
+      const duration = type === 'front' ? random(6, 9) : random(7, 10);
       barrage.style.animationDuration = duration + 's';
-
-      // 避免垂直重叠
-      let overlaps = true;
-      let attempts = 0;
-      while (overlaps && attempts < 30) {
-        overlaps = false;
-        const barrages = document.querySelectorAll('.barrage');
-        const topPos = random(20, window.innerHeight - 50);
-        for (const b of barrages) {
-          const rect = b.getBoundingClientRect();
-          if (Math.abs(rect.top - topPos) < 28) {
-            overlaps = true;
-            break;
-          }
-        }
-        if (!overlaps) barrage.style.top = topPos + 'px';
-        attempts++;
+  
+      if (type === 'front') {
+        barrage.style.color = `hsl(${Math.random() * 360}, 85%, 55%)`;
+        barrage.style.zIndex = 2;
+      } else {
+        barrage.style.color = `hsl(${Math.random() * 360}, 60%, 70%)`;
+        barrage.style.zIndex = 1;
+        barrage.style.opacity = 0.9;
       }
-
+  
+      // 允许部分重叠（密度更高）
+      const barrages = document.querySelectorAll('.barrage');
+      for (const b of barrages) {
+        const rect = b.getBoundingClientRect();
+        if (Math.abs(rect.top - topPos) < 35) return; // 允许更密一点
+      }
+  
       document.body.appendChild(barrage);
-
-      setTimeout(() => {
-        barrage.remove();
-      }, duration * 1000);
+      setTimeout(() => barrage.remove(), duration * 1000 + 500);
     }
-
-    // 更密集：每0.25秒生成一个弹幕
-    setInterval(createBarrage, 250);
+  
+    // 播放一组弹幕（密度更高）
+    async function playGroup(messages, type, repeat = 1) {
+      for (let r = 0; r < repeat; r++) {
+        for (let i = 0; i < messages.length; i++) {
+          createBarrage(messages[i], type);
+          await new Promise(res => setTimeout(res, 80)); // 每条间隔更短 → 密度更高
+        }
+      }
+    }
+  
+    // 主循环（前→后），第二组多放两遍平衡视觉长度
+    async function loopPlay() {
+      while (true) {
+        await playGroup(messagesFront, 'front');
+        await playGroup(messagesBack, 'back', 2); // 第二部分播放两轮
+      }
+    }
+  
+    loopPlay();
   </script>
 </body>
 </html>
